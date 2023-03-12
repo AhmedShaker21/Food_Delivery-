@@ -80,7 +80,6 @@ class ItemWidgetState extends State<ItemWidget> {
                   BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2))
                 ]),
             duration: const Duration(milliseconds: 100),
-            margin: EdgeInsets.only(right: screenAwareSize(20, context)),
             padding: EdgeInsets.only(
                 top: screenAwareSize(12, context), bottom: screenAwareSize(12, context)),
             child: Row(

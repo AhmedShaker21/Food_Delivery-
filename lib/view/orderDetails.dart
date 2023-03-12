@@ -63,7 +63,7 @@ class _OrderDettailsState extends State<OrderDettails> {
                         child: Column(
                           children: [
                             _buildWidgetSummary("Sub Total", subTotal()),
-                            _buildWidgetSummary("Tax", 0),
+                            _buildWidgetSummary("Tax", 15),
                             _buildWidgetSummary("Delivery Charges", 20),
                             _buildWidgetSummary("Bill Amount", subTotal() + 20, isTotal: true),
                             Padding(
