@@ -62,9 +62,6 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: _isSignedIn ?  SignIn() : const SignUp(),
-// home: splash_screen(),
-
 home: OrderDettails(),
       onGenerateRoute: appRouter.onGenerateRoute,
     );

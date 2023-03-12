@@ -1,33 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:untitled11/model/component/constants.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:untitled11/model/component/widget/data.dart';
+import 'package:untitled11/model/component/constants.dart';
 import 'package:untitled11/model/cores/dimensions.dart';
 import 'package:untitled11/model/food_model.dart';
 
 class ItemWidget extends StatefulWidget {
-
   final FoodModel? model;
+  final Function updateFunction;
 
+  const ItemWidget({super.key, this.model, required this.updateFunction});
 
-  ItemWidget({ this.model});
   @override
-  _ItemWidgetState createState() => _ItemWidgetState();
+  ItemWidgetState createState() => ItemWidgetState();
 }
 
-class _ItemWidgetState extends State<ItemWidget> {
-  List<FoodModel> Model =[];
+class ItemWidgetState extends State<ItemWidget> {
+  List<FoodModel> model = [];
 
-  void initState(){
-    Model = List.of(FoodModel.list);
+  @override
+  void initState() {
+    super.initState();
+    model = List.of(FoodModel.list);
   }
-  removeData(Model) {
-    Model.removeAt(Model);
+
+  removeData(model) {
+    model.removeAt(model);
   }
 
+  // int _counter = 0;
 
-
-  int _counter = 0;
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -39,22 +40,21 @@ class _ItemWidgetState extends State<ItemWidget> {
               child: Stack(
                 children: [
                   Slidable(
-                      key: ValueKey(FoodModel),
+                      key: const ValueKey(FoodModel),
                       endActionPane: ActionPane(
-                        dismissible: DismissiblePane(onDismissed: (){},),
-
-                        motion: BehindMotion(),
+                        dismissible: DismissiblePane(
+                          onDismissed: () {},
+                        ),
+                        motion: const BehindMotion(),
                         children: [
                           SlidableAction(
                               icon: Icons.delete_forever_outlined,
                               borderRadius: BorderRadius.circular(25),
                               backgroundColor: Colors.orange,
-                              onPressed: (context)=>{removeData(Model)})
+                              onPressed: (context) => {removeData(model)})
                         ],
                       ),
-
                       child: _buildwidgetModel(context)),
-
                 ],
               ),
             ),
@@ -65,12 +65,9 @@ class _ItemWidgetState extends State<ItemWidget> {
   }
 
   Widget _buildwidgetModel(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
 
     return Stack(
-
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -80,14 +77,12 @@ class _ItemWidgetState extends State<ItemWidget> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: const [
-                  BoxShadow(
-                      color: Colors.black12, blurRadius: 6, offset: Offset(0, 2))
+                  BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2))
                 ]),
             duration: const Duration(milliseconds: 100),
             margin: EdgeInsets.only(right: screenAwareSize(20, context)),
             padding: EdgeInsets.only(
-                top: screenAwareSize(12, context),
-                bottom: screenAwareSize(12, context)),
+                top: screenAwareSize(12, context), bottom: screenAwareSize(12, context)),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -95,8 +90,8 @@ class _ItemWidgetState extends State<ItemWidget> {
                   width: screenAwareSize(75, context),
                   height: screenAwareSize(75, context),
                   decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: ExactAssetImage("assets/${widget.model?.id}.png")),
+                      image:
+                          DecorationImage(image: ExactAssetImage("assets/${widget.model?.id}.png")),
                       borderRadius: const BorderRadius.all(Radius.circular(12))),
                 ),
                 Padding(
@@ -128,63 +123,67 @@ class _ItemWidgetState extends State<ItemWidget> {
             ),
           ),
         ),
-        Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                  left: screenAwareSize(250, context)),
-              child: Container(
-                width: screenAwareSize(35, context),
-                height: screenAwareSize(35, context),
-                decoration: BoxDecoration(
-                    color: const Color(0xFF8FFFCD),
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                      BoxShadow(
+        Expanded(
+          child: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: screenAwareSize(250, context)),
+                child: Container(
+                  width: screenAwareSize(35, context),
+                  height: screenAwareSize(35, context),
+                  decoration: BoxDecoration(
+                      color: const Color(0xFF8FFFCD),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: const [
+                        BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2))
+                      ]),
+                  child: IconButton(
+                    onPressed: widget.model?.orderNumber == 0
+                        ? null
+                        : () {
+                            widget.updateFunction();
+                            _decrementCounter();
+                          },
+                    icon: const Icon(Icons.remove, color: Colors.white),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: screenAwareSize(30, context),
+                height: screenAwareSize(25, context),
+                child: Center(
+                  child: Text(
+                    '${widget.model!.orderNumber}',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                  width: screenAwareSize(35, context),
+                  height: screenAwareSize(35, context),
+                  decoration: BoxDecoration(
+                      color: iconColor,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: const [
+                        BoxShadow(
                           color: Colors.black12,
                           blurRadius: 6,
-                          offset: Offset(0, 2))
-                    ]),
-                child: IconButton(
-                  onPressed: _decrementCounter,
-                  icon: const Icon(Icons.remove, color: Colors.white),
+                          offset: Offset(0, 2),
+                        )
+                      ]),
+                  child: IconButton(
+                    onPressed: () {
+                      widget.updateFunction();
+                      _incrementCounter();
+                    },
+                    icon: const Icon(Icons.add, color: Colors.white),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              width: screenAwareSize(30, context),
-              height: screenAwareSize(25, context),
-              child: Center(
-                child: Text(
-                  '${widget.model!.orderNumber}',
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headlineSmall,
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                width: screenAwareSize(35, context),
-                height: screenAwareSize(35, context),
-                decoration: BoxDecoration(
-                    color: iconColor,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 6,
-                          offset: Offset(0, 2))
-                    ]),
-                child: IconButton(
-                  onPressed: _incrementCounter,
-                  icon: const Icon(Icons.add, color: Colors.white),
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
@@ -201,6 +200,4 @@ class _ItemWidgetState extends State<ItemWidget> {
       widget.model?.orderNumber--;
     });
   }
-
-
 }
