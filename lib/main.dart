@@ -36,7 +36,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _isSignedIn = false;
 
 
   @override
@@ -51,7 +50,6 @@ class _MyAppState extends State<MyApp> {
 
       if (value != null) {
         setState(() {
-          _isSignedIn = value;
         });
       }
     });
@@ -62,7 +60,7 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-home: OrderDettails(),
+home: const MyHomePage(),
       onGenerateRoute: appRouter.onGenerateRoute,
     );
   }
